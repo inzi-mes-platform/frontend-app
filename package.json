@@ -4,7 +4,7 @@
   "description": "Sample application for frontend-framework",
   "main": "src/index.js",
   "scripts": {
-    "start": "set PORT=3300 && react-scripts start",
+    "start": "set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -14,7 +14,7 @@
     "build-webpack": "webpack --mode production"
   },
   "author": {
-    "name" : "lucky sugar park",
+    "name": "lucky sugar park",
     "email": "lucky.sugar.park@wowsoftlab.com"
   },
   "license": "ISC",
@@ -26,7 +26,8 @@
     "@mui/material": "^6.2.0",
     "@rexxars/react-split-pane": "^1.0.0",
     "axios": "^1.7.9",
-    "inzids-mes-platform-frontend-framework": "^0.0.1",
+    "inzi-mes-platform-frontend-default-ui": "^0.0.1",
+    "inzi-mes-platform-frontend-framework": "^0.0.1",
     "re-resizable": "^6.10.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

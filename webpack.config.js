@@ -12,7 +12,7 @@ module.exports = {
   devServer: {
     hot: true,
     host: '0.0.0.0',
-    port: 3300,
+    port: 3001,
     // contentBase: path.join(__dirname, 'public'),
     // stats: "errors-only", => webpack 5에서 없어진 듯
     // open the default web browser when the server start,
