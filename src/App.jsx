@@ -23,8 +23,6 @@ import {
 } from 'inzi-mes-platform-frontend-default-ui';
 
 import BpmnViewer from './BpmnViewer';
-import { Flow1 } from './Flow1';
-import { Flow2 } from './Flow2';
 
 const mymenu = [
     {
@@ -95,20 +93,6 @@ const mymenu = [
                 "link" : "/view-bpmn",
                 "icon" : "PeopleIcon"
             },
-            {
-                "type" : "ListItem",
-                "name" : "플로우-1",
-                "state" : { "viewId": "bodyMainView" },
-                "link" : "/view-flow1",
-                "icon" : "PeopleIcon"
-            },
-            {
-                "type" : "ListItem",
-                "name" : "플로우-2",
-                "state" : { "viewId": "bodyMainView" },
-                "link" : "/view-flow2",
-                "icon" : "PeopleIcon"
-            }
         ]
     }
 ]
@@ -154,20 +138,6 @@ const myAuthRoutes = [
         "presenter": <BpmnViewer />,
         "breadcrumb": "view-bpmn",
         "dispName": "Bpmn Viewer",
-        "layout": "layout-1"
-    },
-    {
-        "key": "/view-flow1",
-        "presenter": <Flow1 />,
-        "breadcrumb": "view-flow-1",
-        "dispName": "Bpmn Flow1",
-        "layout": "layout-1"
-    },
-    {
-        "key": "/view-flow2",
-        "presenter": <Flow2 />,
-        "breadcrumb": "view-flow-2",
-        "dispName": "Bpmn Flow2",
         "layout": "layout-1"
     },
     {
