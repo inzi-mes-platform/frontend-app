@@ -17,9 +17,11 @@ import {
     Home,
     NotFound,
     CheckIfHoliday,
+    CheckIfHolidayWithBookmarkEnabler,
     PackForHoliday,
     PackForWork,
-    TodoList
+    TodoList,
+    TodoListWithBookmarkEnabler
 } from 'inzi-mes-platform-frontend-default-ui';
 
 import BpmnViewer from './BpmnViewer';
@@ -107,14 +109,14 @@ const myAuthRoutes = [
     },
     {
         "key": "/todo-list",
-        "presenter": <TodoList />,
+        "presenter": <TodoListWithBookmarkEnabler />,
         "breadcrumb": "todo-list",
         "dispName": "To do list",
         "layout": "layout-1"
     },
     {
         "key": "/check-if-holiday",
-        "presenter": <CheckIfHoliday />,
+        "presenter": <CheckIfHolidayWithBookmarkEnabler />,
         "breadcrumb": "check-if-holiday",
         "dispName": "Check if holiday",
         "layout": "layout-1"
@@ -158,6 +160,15 @@ const iconInfos = [
     
 const myUnauthRoutes = myAuthRoutes;
     
+let bookmarkCount = 4;
+
+let bookmarkList = [
+    { id: 1, name: 'Todo list bookmark', pathName: "/todo-list", state: {}, description: "-" },
+    { id: 2, name: 'Check if holiday bookmark', pathName: "/check-if-holiday", state: {}, description: "-" },
+    { id: 3, name: 'Pack for holiday bookmark', pathName: "/pack-for-holiday", state: {}, description: "-" },
+    { id: 4, name: 'Pack for work bookmark', pathName: "/pack-for-work", state: {}, description: "-" },
+];
+
 function App () {
 
     React.useEffect(()=>{
@@ -168,6 +179,21 @@ function App () {
 
     const handleOnPersonSecurityPolicyShow = () => {
         console.log('#### security show');
+    }
+
+    const handleOnBookmarkFetchReq = (userId, onBookmarksFetched) => {
+        console.log("handleOnBookmarkFetchReq in App =>" + userId + ", " + JSON.stringify(bookmarkList));
+        console.log("onBookmarksFetched=>" + onBookmarksFetched);
+        onBookmarksFetched([ ...bookmarkList ]);
+    }
+
+    const handleOnBookmarkAddReq = (bookmarkInfo) => {
+        bookmarkInfo.id = ++bookmarkCount;
+        bookmarkList.push(bookmarkInfo);
+    }
+
+    const handleOnBookmarkDelReq = (bkmarkId) => {
+        bookmarkList = bookmarkList.filter(bkmark=>bkmark.id!==bkmarkId);
     }
 
     return (
@@ -191,9 +217,9 @@ function App () {
             //     customMenual: undefined,
             // }}
             bodyProps = {{
-                bodyType : "OnePage",
+                bodyType : "Tab",
                 tabsOptions : {
-                    allowSameKey : false
+                    allowSameKey : true
                 },
                 breadcrumbNavOptions : {
                     use : true,
@@ -216,8 +242,9 @@ function App () {
                         email : "lucky.sugar.park@wowsoftlab.com",
                         photoUrl : "/assets/images/avatars/avatar_12.jpg"
                     },
-                    onBookmarkAddReq : () => console.log("onBookmarkAddReq from App"),
-                    onBookmarkFetchReq : () => console.log("onBookmarkFetchReq from App"),
+                    onBookmarkAddReq : handleOnBookmarkAddReq,
+                    onBookmarkDelReq : handleOnBookmarkDelReq,
+                    onBookmarkFetchReq : handleOnBookmarkFetchReq,
                     onQnaShowReq : () => console.log("onQnaShowReq from App"),
                     onAboutShowReq : () => console.log("onAboutShowReq from App"),
                     onMyInfoShowReq : () => console.log("onMyInfoShowReq from App"),
