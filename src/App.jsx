@@ -125,7 +125,7 @@ const myAuthRoutes = [
         "key": "/pack-for-holiday",
         "presenter": <PackForHoliday />,
         "breadcrumb": "pack-for-holiday",
-        "dispName": "Pack for holidayaaaaaaa",
+        "dispName": "Pack for holiday",
         "layout": "layout-1"
     },
     {
