@@ -2,7 +2,11 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 module.exports = {
+  
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, "public"),
@@ -58,7 +62,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+    }),
   ],
 
 };

@@ -5,7 +5,6 @@ import {
     People as PeopleIcon
 } from '@mui/icons-material';
 
-
 import 
     PutTogether,
     {
@@ -13,6 +12,7 @@ import
         registerIcons,
         createRestTemplate
     } from 'inzi-mes-platform-frontend-framework';
+
 import {
     Home,
     NotFound,
@@ -21,7 +21,8 @@ import {
     PackForHoliday,
     PackForWork,
     TodoList,
-    TodoListWithBookmarkEnabler
+    TodoListWithBookmarkEnabler,
+    TodoContainer
 } from 'inzi-mes-platform-frontend-default-ui';
 
 import BpmnViewer from './BpmnViewer';
@@ -96,6 +97,20 @@ const mymenu = [
                 "icon" : "PeopleIcon"
             },
         ]
+    },
+    {
+        "name" : "나의 할일",
+        "type" : "ListItem",
+        "icon" : "PeopleIcon",
+        "items" : [
+            {
+                "type" : "ListItem",
+                "name" : "할일 관리",
+                "state" : { "viewId": "bodyMainView" },
+                "link" : "/my-todo-mgmt",
+                "icon" : "PeopleIcon"
+            },
+        ]
     }
 ]
     
@@ -110,14 +125,14 @@ const myAuthRoutes = [
     {
         "key": "/todo-list",
         "presenter": <TodoListWithBookmarkEnabler />,
-        "breadcrumb": "todo-list",
+        "breadcrumb": "/Home/todo-list",
         "dispName": "To do list",
         "layout": "layout-1"
     },
     {
         "key": "/check-if-holiday",
         "presenter": <CheckIfHolidayWithBookmarkEnabler />,
-        "breadcrumb": "check-if-holiday",
+        "breadcrumb": "/Home/check-if-holiday",
         "dispName": "Check if holiday",
         "layout": "layout-1"
     },
@@ -140,6 +155,13 @@ const myAuthRoutes = [
         "presenter": <BpmnViewer />,
         "breadcrumb": "view-bpmn",
         "dispName": "Bpmn Viewer",
+        "layout": "layout-1"
+    },
+    {
+        "key": "/my-todo-mgmt",
+        "presenter": <TodoContainer />,
+        "breadcrumb": "my-todo-mgmt",
+        "dispName": "My todo management",
         "layout": "layout-1"
     },
     {
@@ -217,7 +239,7 @@ function App () {
             //     customMenual: undefined,
             // }}
             bodyProps = {{
-                bodyType : "Tab",
+                bodyType : "OnePage",
                 tabsOptions : {
                     allowSameKey : true
                 },
