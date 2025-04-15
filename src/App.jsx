@@ -1,8 +1,17 @@
 import React from 'react';
+import { Provider, useDispatch } from 'react-redux';
+// import { BrowserRouter, useNavigate, useLocation } from 'react-router';
 import "./styles.css";
 
 import { 
-    People as PeopleIcon
+    People as PeopleIcon,
+    BusinessCenter as BusinessCenterIcon,
+    Surfing as SurfingIcon,
+    Checklist as ChecklistIcon,
+    AddTask as AddTaskIcon,
+    Verified as VerifiedIcon,
+    Schema as SchemaIcon,
+    SystemUpdateOutlined
 } from '@mui/icons-material';
 
 import 
@@ -10,7 +19,8 @@ import
     {
         addReducer,
         registerIcons,
-        createRestTemplate
+        createRestTemplate,
+        store
     } from 'inzi-mes-platform-frontend-framework';
 
 import {
@@ -25,90 +35,100 @@ import {
     TodoContainer
 } from 'inzi-mes-platform-frontend-default-ui';
 
+import { History as history } from 'inzi-mes-platform-frontend-framework';
+
 import BpmnViewer from './BpmnViewer';
+
+import {
+    LoginForm,
+    RegisterForm,
+    init,
+    logout,
+} from 'inzi-mes-platform-frontend-default-ui-auth';
+// import Register from './components/auth/Register';
 
 const mymenu = [
     {
         "name" : "나의할일",
         "type" : "ListItem",
-        "icon" : "PeopleIcon",
+        "icon" : "ChecklistIcon",
         "items" : [
             {
                 "type" : "ListItem",
                 "name" : "내가해야 할일",
                 "state" : { "viewId": "bodyMainView" },
                 "link" : "/todo-list",
-                "icon" : "PeopleIcon"
+                "icon" : "ChecklistIcon"
             }
         ]
     } ,
     {
         "name" : "휴일체크",
         "type" : "ListItem",
-        "icon" : "PeopleIcon",
+        "icon" : "VerifiedIcon",
         "items" : [
             {
                 "type" : "ListItem",
                 "name" : "휴일체크",
                 "state" : { "viewId": "bodyMainView" },
                 "link" : "/check-if-holiday",
-                "icon" : "PeopleIcon"
+                "icon" : "VerifiedIcon"
             }
         ]
     },
     {
         "name" : "휴일진행",
         "type" : "ListItem",
-        "icon" : "PeopleIcon",
+        "icon" : "SurfingIcon",
         "items" : [
             {
                 "type" : "ListItem",
                 "name" : "휴일진행",
                 "state" : { "viewId": "bodyMainView" },
                 "link" : "/pack-for-holiday",
-                "icon" : "PeopleIcon"
+                "icon" : "SurfingIcon"
             }
         ]
     },
     {
         "name" : "업무진행",
         "type" : "ListItem",
-        "icon" : "PeopleIcon",
+        "icon" : "BusinessCenterIcon",
         "items" : [
             {
                 "type" : "ListItem",
                 "name" : "업무진행",
                 "state" : { "viewId": "bodyMainView" },
                 "link" : "/pack-for-work",
-                "icon" : "PeopleIcon"
+                "icon" : "BusinessCenterIcon"
             }
         ]
     },
     {
         "name" : "프로세스 보기",
         "type" : "ListItem",
-        "icon" : "PeopleIcon",
+        "icon" : "SchemaIcon",
         "items" : [
             {
                 "type" : "ListItem",
                 "name" : "프로세스 보기",
                 "state" : { "viewId": "bodyMainView" },
                 "link" : "/view-bpmn",
-                "icon" : "PeopleIcon"
+                "icon" : "SchemaIcon"
             },
         ]
     },
     {
         "name" : "나의 할일",
         "type" : "ListItem",
-        "icon" : "PeopleIcon",
+        "icon" : "AddTaskIcon",
         "items" : [
             {
                 "type" : "ListItem",
                 "name" : "할일 관리",
                 "state" : { "viewId": "bodyMainView" },
                 "link" : "/my-todo-mgmt",
-                "icon" : "PeopleIcon"
+                "icon" : "AddTaskIcon"
             },
         ]
     }
@@ -125,14 +145,14 @@ const myAuthRoutes = [
     {
         "key": "/todo-list",
         "presenter": <TodoListWithBookmarkEnabler />,
-        "breadcrumb": "/Home/todo-list",
+        "breadcrumb": "todo-list",
         "dispName": "To do list",
         "layout": "layout-1"
     },
     {
         "key": "/check-if-holiday",
         "presenter": <CheckIfHolidayWithBookmarkEnabler />,
-        "breadcrumb": "/Home/check-if-holiday",
+        "breadcrumb": "check-if-holiday",
         "dispName": "Check if holiday",
         "layout": "layout-1"
     },
@@ -172,15 +192,68 @@ const myAuthRoutes = [
         "layout": "layout-1"
     }
 ]
-    
+
 const iconInfos = [
     {
         "name" : "PeopleIcon",
         "icon" : PeopleIcon
+    },
+    {
+        "name" : "BusinessCenterIcon",
+        "icon" : BusinessCenterIcon
+    },
+    {
+        "name" : "SurfingIcon",
+        "icon" : SurfingIcon
+    },
+    {
+        "name" : "ChecklistIcon",
+        "icon" : ChecklistIcon
+    },
+    {
+        "name" : "AddTaskIcon",
+        "icon" : AddTaskIcon
+    },
+    {
+        "name" : "VerifiedIcon",
+        "icon" : VerifiedIcon
+    },
+    {
+        "name" : "SchemaIcon",
+        "icon" : SchemaIcon
     }
 ]
     
-const myUnauthRoutes = myAuthRoutes;
+const myUnauthRoutes = [
+    {
+        "key": "/",
+        "presenter": <LoginForm />,
+        "breadcrumb": "User Login",
+        "dispName": "User Login",
+        "layout": "layout-1"
+    },
+    {
+        "key": "/user/login",
+        "presenter": <LoginForm />,
+        "breadcrumb": "User Login",
+        "dispName": "User Login",
+        "layout": "layout-1"
+    },
+    {
+        "key": "/user/register",
+        "presenter": <RegisterForm />,
+        "breadcrumb": "User Register",
+        "dispName": "User Register",
+        "layout": "layout-1"
+    },
+    {
+        "key": "*",
+        "presenter": <LoginForm />,
+        "breadcrumb": "User Login",
+        "dispName": "User Login",
+        "layout": "layout-1"
+    },
+];
     
 let bookmarkCount = 4;
 
@@ -191,7 +264,16 @@ let bookmarkList = [
     { id: 4, name: 'Pack for work bookmark', pathName: "/pack-for-work", state: {}, description: "-" },
 ];
 
-function App () {
+const App = () => {
+
+    // history.navigate = useNavigate();
+    // history.location = useLocation();
+
+    const dispatch = useDispatch();
+    const doLogout = (id, real) => dispatch(logout(id, real));
+
+    // console.log("LOGOUT=>" + logout);
+    // console.log("DO_LOGOUT=>" + doLogout);
 
     React.useEffect(()=>{
         addReducer();
@@ -218,7 +300,12 @@ function App () {
         bookmarkList = bookmarkList.filter(bkmark=>bkmark.id!==bkmarkId);
     }
 
+    // const handleOnLogoutRequest = (id, real) => {
+    //     logout();
+    // }
+
     return (
+        // <BrowserRouter>
         <PutTogether 
             additionalThemes={ undefined }
             menuProps = {{
@@ -256,14 +343,9 @@ function App () {
             headerProps = {{
                 customHeader: undefined,
                 defaultHeaderOptions: {
-                    title : "Example System",
+                    title : "My New Mes",
                     // iconLogo : <PeopleIcon />,
                     iconLogo : undefined,
-                    user : {
-                        id : "ispark",
-                        email : "lucky.sugar.park@wowsoftlab.com",
-                        photoUrl : "/assets/images/avatars/avatar_12.jpg"
-                    },
                     onBookmarkAddReq : handleOnBookmarkAddReq,
                     onBookmarkDelReq : handleOnBookmarkDelReq,
                     onBookmarkFetchReq : handleOnBookmarkFetchReq,
@@ -271,7 +353,7 @@ function App () {
                     onAboutShowReq : () => console.log("onAboutShowReq from App"),
                     onMyInfoShowReq : () => console.log("onMyInfoShowReq from App"),
                     onNotificationShowReq : () => console.log("onNotificationShowReq from App"),
-                    onLogoutReq : () => console.log("LogoutReq from App")
+                    onLogoutReq : doLogout,
                 }
             }}
             footerProps = {{
@@ -285,8 +367,9 @@ function App () {
             }}
             iconInfos={ iconInfos } 
             languagePack={ undefined }
-            initializeAuth={ undefined }
+            initializeAuth={ init }
         />
+        // </BrowserRouter>
     )
 }
 

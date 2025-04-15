@@ -49,7 +49,24 @@ module.exports = {
       {
         test: /\.(css|scss)$/i,
         use: ['style-loader', 'css-loader'],
-      }
+      },
+      {
+        test: /\.svg$/,
+        // svg를 로딩하기 위해서는 loader를 설정해야 한다 (webpack 5에서 동작)
+        use: {
+          // issuer: /\.[jt]sx?$/,
+          loader: '@svgr/webpack',
+        }
+        // use: [
+        //   {
+        //      loader: 'raw-loader',
+        //   },
+        // ],
+      },
+      {
+        test: /\.(png|jpg)$/,
+        use: [ 'file-loader' ],
+      },
     ],
   },
 

@@ -1,4 +1,9 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import {
+    Typography
+} from '@mui/material'
+
 import ReactBpmn from 'react-bpmn';
 
 const BpmnViewer = (props) => {
@@ -15,8 +20,14 @@ const BpmnViewer = (props) => {
         console.log('failed to show diagram');
     }
 
+    const handleOnDiagramClick = () => {
+        console.log("#### handleOnDiagramClick")
+    }
+
     return (
-        <div style={{ margin: 15 }}>
+        <div 
+            style={{ margin: 15 }}
+        >
             <ReactBpmn
                 url="/invokeRestService.bpmn"
                 // url="/pizzaDiagram.bpmn"
